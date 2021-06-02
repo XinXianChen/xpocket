@@ -19,6 +19,7 @@ import com.perfma.xlab.xpocket.plugin.ui.UIEngine;
 import com.perfma.xlab.xpocket.utils.LogoPrinter;
 import com.perfma.xlab.xpocket.utils.TerminalUtil;
 import com.perfma.xlab.xpocket.utils.XPocketConstants;
+import com.perfma.xlab.xpocket.utils.XpocketLogPrint;
 import com.sun.tools.attach.AgentLoadException;
 import org.jline.reader.*;
 import org.jline.reader.impl.completer.AggregateCompleter;
@@ -70,6 +71,7 @@ public class DefaultUIEngine extends DefaultNamedObject implements UIEngine {
                 }
             }
         } catch (EndOfInputException ex) {
+            XpocketLogPrint.release();
             systemProcess.output("\nBye.");
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -90,6 +92,7 @@ public class DefaultUIEngine extends DefaultNamedObject implements UIEngine {
      */
     private void waitForCommands(DefaultXPocketProcess systemProcess) throws EndOfInputException {
         for (; ; ) {
+            XpocketLogPrint.write2log(XPocketStatusContext.instance.line());
             String line = TerminalUtil.readLine(reader, XPocketStatusContext.instance.line());
             if (line == null) {
                 break;
@@ -97,7 +100,7 @@ public class DefaultUIEngine extends DefaultNamedObject implements UIEngine {
             if ("".equalsIgnoreCase(line.trim())) {
                 continue;
             }
-
+            XpocketLogPrint.write2log(line);
             switch (line.trim()) {
                 case "clear":
                 case "clr":

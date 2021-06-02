@@ -4,6 +4,7 @@ import com.perfma.xlab.xpocket.console.Output;
 import com.perfma.xlab.xpocket.spi.process.XPocketProcess;
 import com.perfma.xlab.xpocket.spi.process.XPocketProcessAction;
 import com.perfma.xlab.xpocket.utils.TerminalUtil;
+import com.perfma.xlab.xpocket.utils.XpocketLogPrint;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -53,9 +54,12 @@ public class DefaultXPocketProcess implements XPocketProcess {
                     String[] lines = output.split(TerminalUtil.lineSeparator);
                     if(lines.length == 0) {
                         this.output.print(output);
+                        XpocketLogPrint.write2log(output);
                     } else {
                         for(String line : lines) {
-                            this.output.print(simpleFormatOutput(line));
+                            final String lineOutput = simpleFormatOutput(line);
+                            this.output.print(lineOutput);
+                            XpocketLogPrint.write2log(lineOutput);
                         }
                     }
                     outputStream.flush();
